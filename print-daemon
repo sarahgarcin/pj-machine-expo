@@ -1,0 +1,28 @@
+#!/bin/bash
+# set -x
+
+# ----- INSTRUCTIONS --------
+# Install watch with homebrew
+# https://brew.sh/
+# brew install watch
+# create an "archivebox" folder in the same folder this script is (pdf are saved in this folder)
+# create an "printbox" folder in the same folder this script is (put the pdf to print in this folder)
+# find the printer you want to print on
+# Open the terminal and type lpstat -p
+# Change the name of the printer into the script
+# run the script watch -n 10 bash print-deamon.sh
+
+# change the name here
+printer=Canon_LBP7100C_7110C
+
+archivebox="archivebox/"
+printinbox="printbox/"
+
+# main loop
+mkdir $archivebox $printinbox
+
+for step in `find $printinbox -iname "*.pdf" -type f`
+do 
+  lpr -P $printer -o media=A4 -o fit-to-page $step
+  mv -v $step $archivebox # copy in outbox (archives)
+done
